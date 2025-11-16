@@ -1,0 +1,5 @@
+{
+  "name": "Sorcery TCG Game Tracker",
+  "description": "A two-player game tracker for the Sorcery: Contested Realm TCG. Track life totals, mana thresholds, and mana colors with an elegant interface. Includes a built-in dice roller for convenience.",
+  "requestFramePermissions": []
+}
