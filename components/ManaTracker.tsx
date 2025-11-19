@@ -2,6 +2,7 @@
 import React from 'react';
 import { ManaColors, ManaColor } from '../types';
 import { AirIcon, EarthIcon, FireIcon, WaterIcon } from './Icons';
+import { useSwipe } from './useSwipe';
 
 interface ManaTrackerProps {
   manaColors: ManaColors;
@@ -22,14 +23,20 @@ export const ManaTracker: React.FC<ManaTrackerProps> = ({ manaColors, onThreshol
         const { icon: Icon, activeClass } = manaIconMap[color];
         const value = manaColors[color];
         const isActive = value > 0;
+        
+        const swipeHandlers = useSwipe({
+          onSwipeUp: () => onThresholdChange(color, 1),
+          onSwipeDown: () => value > 0 && onThresholdChange(color, -1),
+        });
+
         return (
-          <div key={color} className="flex flex-col items-center justify-between w-20 md:w-24">
+          <div key={color} className="flex flex-col items-center justify-between w-20 md:w-24 py-1" {...swipeHandlers}>
             <button 
               onClick={() => onThresholdChange(color, 1)}
               aria-label={`Increase ${color} threshold`}
-              className="w-full flex-1 flex items-center justify-center transition-transform transform hover:scale-110 pt-2"
+              className="w-full flex-1 flex items-end justify-center transition-transform transform hover:scale-110 pb-1"
             >
-              <div className={`w-14 h-14 md:w-16 md:h-16 transition-all duration-300 ${isActive ? activeClass : 'text-slate-600'}`}>
+              <div className={`w-12 h-12 md:w-14 md:h-14 transition-all duration-300 ${isActive ? activeClass : 'text-slate-600'}`}>
                 <Icon />
               </div>
             </button>
@@ -37,9 +44,9 @@ export const ManaTracker: React.FC<ManaTrackerProps> = ({ manaColors, onThreshol
               onClick={() => onThresholdChange(color, -1)} 
               disabled={value <= 0}
               aria-label={`Decrease ${color} threshold`}
-              className="w-full flex-1 flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed grow-[1.5]"
+              className="w-full flex items-start justify-center disabled:opacity-40 disabled:cursor-not-allowed grow-[2] pt-1"
             >
-              <span className={`font-bold text-3xl md:text-4xl tabular-nums transition-colors ${isActive ? 'text-white hover:text-slate-300' : 'text-slate-400'}`}>{value}</span>
+              <span className={`font-bold text-5xl md:text-6xl tabular-nums transition-colors leading-none ${isActive ? 'text-white hover:text-slate-300' : 'text-slate-400'}`}>{value}</span>
             </button>
           </div>
         );

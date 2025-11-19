@@ -25,13 +25,13 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ currentStartingLif
       role="dialog"
     >
       <div 
-        className="bg-slate-800 border-2 border-amber-300 rounded-lg p-6 shadow-2xl w-11/12 max-w-md flex flex-col items-center gap-4"
+        className="bg-slate-800 border-2 border-indigo-400 rounded-lg p-6 shadow-2xl w-11/12 max-w-md flex flex-col items-center gap-4"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="font-cinzel text-3xl text-amber-300">Game Settings</h2>
+        <h2 className="text-3xl text-indigo-300">Game Settings</h2>
         
         <div className="w-full mt-4">
-          <label htmlFor="starting-life" className="block text-lg text-slate-300 mb-2 font-cinzel text-center">
+          <label htmlFor="starting-life" className="block text-lg text-slate-300 mb-2 text-center">
             Starting Life Total
           </label>
           <input 
@@ -40,7 +40,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ currentStartingLif
             value={life}
             onChange={(e) => setLife(e.target.value)}
             min="1"
-            className="w-full bg-slate-900 border border-slate-600 rounded-lg p-3 text-center text-2xl focus:outline-none focus:ring-2 focus:ring-amber-300"
+            className="w-full bg-slate-900 border border-slate-600 rounded-lg p-3 text-center text-2xl focus:outline-none focus:ring-2 focus:ring-indigo-400"
           />
         </div>
 

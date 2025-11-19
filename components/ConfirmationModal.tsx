@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 interface ConfirmationModalProps {
@@ -25,11 +26,11 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
         role="dialog"
     >
       <div 
-        className="bg-slate-800 border-2 border-amber-300 rounded-lg p-6 shadow-2xl w-11/12 max-w-md flex flex-col items-center gap-4 text-center"
+        className="bg-slate-800 border-2 border-indigo-400 rounded-lg p-6 shadow-2xl w-11/12 max-w-md flex flex-col items-center gap-4 text-center"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="font-cinzel text-3xl text-amber-300">{title}</h2>
-        <p className="text-slate-300 mt-2">{message}</p>
+        <h2 className="text-3xl text-indigo-300">{title}</h2>
+        <p className="text-slate-300 mt-2 text-lg">{message}</p>
         
         <div className="flex justify-around w-full mt-4 gap-4">
             <button

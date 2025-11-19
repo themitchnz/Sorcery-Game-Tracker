@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { SkullIcon } from './Icons';
 
@@ -13,10 +14,10 @@ export const Counter: React.FC<CounterProps> = ({ value, onIncrement, onDecremen
   const isDeathsDoor = title === 'Life' && value <= 0;
 
   return (
-    <div className="flex flex-col items-center justify-center w-full h-full bg-slate-800/50 rounded-lg p-2 md:p-4 shadow-inner">
+    <div className="flex flex-col items-center justify-center w-full h-full bg-slate-800-50 rounded-lg p-2 md:p-4 shadow-inner">
       <div className="flex items-center gap-2 mb-2">
         {isDeathsDoor ? <SkullIcon className="w-8 h-8 md:w-10 md:h-10 text-rose-500"/> : icon}
-        <h3 className="font-cinzel text-lg md:text-2xl text-slate-300">{title}</h3>
+        <h3 className="text-lg md:text-2xl text-slate-300">{title}</h3>
       </div>
       <div className="flex items-center justify-around w-full flex-1">
         <button 
@@ -29,8 +30,8 @@ export const Counter: React.FC<CounterProps> = ({ value, onIncrement, onDecremen
 
         {isDeathsDoor ? (
           <div className="flex flex-col items-center justify-center text-center w-28 leading-none">
-            <span className="text-xl md:text-3xl font-bold text-rose-400 font-cinzel">DEATH'S</span>
-            <span className="text-xl md:text-3xl font-bold text-rose-400 font-cinzel">DOOR</span>
+            <span className="text-xl md:text-3xl font-bold text-rose-400">DEATH'S</span>
+            <span className="text-xl md:text-3xl font-bold text-rose-400">DOOR</span>
           </div>
         ) : (
           <span className="text-6xl md:text-8xl font-bold text-white w-28 text-center tabular-nums">{value}</span>

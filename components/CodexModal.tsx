@@ -1,100 +1,72 @@
+
 import React, { useState } from 'react';
-import { GoogleGenAI } from '@google/genai';
 
 interface CodexModalProps {
   onClose: () => void;
 }
 
+type View = 'codex' | 'cards' | 'faqs';
+
+const views: Record<View, { title: string; url: string }> = {
+  codex: { title: 'The Codex', url: 'https://curiosa.io/codex' },
+  cards: { title: 'Card Gallery', url: 'https://curiosa.io/cards' },
+  faqs: { title: 'Official FAQs', url: 'https://curiosa.io/faqs' },
+};
+
 export const CodexModal: React.FC<CodexModalProps> = ({ onClose }) => {
-  const [question, setQuestion] = useState('');
-  const [answer, setAnswer] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [activeView, setActiveView] = useState<View>('codex');
 
-  const handleAsk = async () => {
-    if (!question.trim()) return;
-
-    if (!navigator.onLine) {
-        setError('You must be online to consult the Codex.');
-        return;
-    }
-
-    setIsLoading(true);
-    setAnswer('');
-    setError(null);
-
-    try {
-      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-      const systemInstruction = "You are an expert judge for the trading card game 'Sorcery: Contested Realm'. Your knowledge is based on the official Comprehensive Rules Codex. When a player asks a question, provide a clear, concise, and accurate answer based on these rules. If the question is ambiguous or you cannot provide a definitive answer, state that. Do not invent rules. The primary reference is the Codex found at curiosa.io/codex.";
-      
-      const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
-        contents: question,
-        config: {
-            systemInstruction: systemInstruction,
-            temperature: 0.2,
-        }
-      });
-
-      setAnswer(response.text);
-    } catch (e) {
-      console.error(e);
-      setError('The Codex is silent... An error occurred. Please try again later.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    handleAsk();
-  };
+  const ViewSwitcher: React.FC<{ className?: string }> = ({ className }) => (
+    <div className={className}>
+      {(Object.keys(views) as View[]).map((view) => (
+        <button
+          key={view}
+          onClick={() => setActiveView(view)}
+          className={`flex-1 sm:flex-none px-3 py-2 sm:py-1 rounded-md font-bold text-sm transition-colors ${
+            activeView === view
+              ? 'bg-indigo-700 text-white'
+              : 'bg-transparent text-slate-400 hover:bg-slate-700 hover:text-white'
+          }`}
+        >
+          {view.toUpperCase()}
+        </button>
+      ))}
+    </div>
+  );
 
   return (
     <div 
-        className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50"
+        className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4"
         onClick={onClose}
     >
       <div 
-        className="bg-slate-800 border-2 border-amber-300 rounded-lg p-6 shadow-2xl w-11/12 max-w-lg flex flex-col items-center gap-4 animate-fade-in"
+        className="bg-slate-800 border-2 border-indigo-400 rounded-lg shadow-2xl w-full max-w-5xl h-[90vh] flex flex-col animate-fade-in"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="font-cinzel text-3xl text-amber-300">Ask the Codex</h2>
-        <p className="text-slate-400 text-center text-sm -mt-2">Have a rules question? The Codex has answers.</p>
+        <div className="flex items-center justify-between p-4 border-b border-slate-700 flex-shrink-0">
+            <h2 className="text-xl md:text-2xl text-indigo-300">{views[activeView].title}</h2>
+            <div className="flex items-center gap-4">
+                <ViewSwitcher className="hidden sm:flex items-center gap-2 rounded-lg p-1 bg-slate-900" />
+                <button
+                  onClick={onClose}
+                  className="px-4 py-2 bg-slate-600 hover:bg-slate-500 rounded-lg font-bold text-lg transition-colors"
+                >
+                  Close
+                </button>
+            </div>
+        </div>
 
-        <form onSubmit={handleSubmit} className="w-full flex flex-col gap-3">
-            <textarea 
-                value={question}
-                onChange={(e) => setQuestion(e.target.value)}
-                placeholder="e.g., Can I cast a spell if my site is contested?"
-                rows={3}
-                className="w-full bg-slate-900 border border-slate-600 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-amber-300"
-                aria-label="Rule question"
-                disabled={isLoading}
-            />
-             <button
-              type="submit"
-              disabled={isLoading || !question.trim()}
-              className="p-3 bg-purple-800 hover:bg-purple-700 rounded-lg font-bold text-lg transition-all transform hover:scale-105 disabled:bg-slate-600 disabled:cursor-not-allowed disabled:scale-100"
-            >
-              {isLoading ? 'Consulting the Ancients...' : 'Ask'}
-            </button>
-        </form>
+        <ViewSwitcher className="sm:hidden flex items-center justify-around border-b border-slate-700 bg-slate-900/50" />
         
-        {(answer || error || isLoading) && (
-          <div className="mt-4 p-4 bg-slate-900 rounded-lg w-full text-left max-h-60 overflow-y-auto">
-            {isLoading && <p className="text-slate-400 text-center animate-pulse">The Codex is searching for an answer...</p>}
-            {error && <p className="text-rose-400 text-center">{error}</p>}
-            {answer && <p className="text-slate-200 whitespace-pre-wrap">{answer}</p>}
-          </div>
-        )}
-
-        <button
-          onClick={onClose}
-          className="mt-4 w-full p-3 bg-slate-600 hover:bg-slate-500 rounded-lg font-bold text-lg"
-        >
-          Close
-        </button>
+        <div className="flex-grow p-1 md:p-2 overflow-hidden">
+            <iframe
+                key={activeView}
+                src={views[activeView].url}
+                title={`Sorcery: Contested Realm - ${views[activeView].title}`}
+                className="w-full h-full border-0 rounded-b-md"
+                sandbox="allow-scripts allow-same-origin"
+            />
+        </div>
       </div>
     </div>
   );

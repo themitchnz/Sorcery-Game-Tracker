@@ -38,10 +38,10 @@ export const DiceRollerModal: React.FC<DiceRollerModalProps> = ({ onClose }) => 
         onClick={onClose}
     >
       <div 
-        className="bg-slate-800 border-2 border-amber-300 rounded-lg p-6 shadow-2xl w-11/12 max-w-md flex flex-col items-center gap-4 animate-fade-in"
+        className="bg-slate-800 border-2 border-indigo-400 rounded-lg p-6 shadow-2xl w-11/12 max-w-md flex flex-col items-center gap-4 animate-fade-in"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="font-cinzel text-3xl text-amber-300">Roll Dice / Flip Coin</h2>
+        <h2 className="text-3xl text-indigo-300">Roll Dice / Flip Coin</h2>
         
         <div className="grid grid-cols-2 gap-3 w-full">
             <button
@@ -71,7 +71,7 @@ export const DiceRollerModal: React.FC<DiceRollerModalProps> = ({ onClose }) => 
                 onChange={(e) => setCustomSides(e.target.value)}
                 placeholder="Custom d(x)"
                 min="1"
-                className="flex-grow bg-slate-900 border border-slate-600 rounded-lg p-3 text-center focus:outline-none focus:ring-2 focus:ring-amber-300"
+                className="flex-grow bg-slate-900 border border-slate-600 rounded-lg p-3 text-center focus:outline-none focus:ring-2 focus:ring-indigo-400"
             />
              <button
               type="submit"
@@ -87,7 +87,7 @@ export const DiceRollerModal: React.FC<DiceRollerModalProps> = ({ onClose }) => 
               <p className="text-slate-400">
                   {lastAction === 'Coin Flip' ? 'Result:' : `You rolled a ${lastAction}:`}
               </p>
-              <p className="text-6xl font-bold text-white font-cinzel tracking-wider">{result}</p>
+              <p className="text-6xl font-bold text-white tracking-wider">{result}</p>
             </div>
           ) : (
             <p className="text-slate-500 italic">The dice are waiting...</p>
